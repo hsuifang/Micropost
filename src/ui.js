@@ -7,7 +7,7 @@ class UI {
     this.postSubmit = document.querySelector('.post-submit')
     this.forState = 'add'
   }
-
+  // show all post
   showPosts(posts) {
     let output = '';
 
@@ -32,6 +32,7 @@ class UI {
     this.post.innerHTML = output
   }
 
+  // show alert message
   showAlert(message, className){
     this.clearAlert()
 
@@ -56,7 +57,7 @@ class UI {
     }, 3000)
 
   }
-
+  // clear alert message
   clearAlert() {
     const currentAlert = document.querySelector('.alert')
     if(currentAlert) {
@@ -64,9 +65,58 @@ class UI {
     }
   }
 
+  // clear all fields
   clearFields() {
     this.titleInput.value = ''
     this.bodyInput.value = ''
+  }
+
+  // Fill form to edit
+  fillForm (data) {
+    this.titleInput.value = data.title
+    this.bodyInput.value = data.body
+    this.idInput.value = data.id
+
+    this.changeFormState('edit')
+  }
+  // Clear Id hidden value
+  clearIdInput() {
+    this.idInput.value = "nothing"
+  }
+  // Change the form state
+  changeFormState(type) {
+    if (type === 'edit') {
+      this.postSubmit.textContent = 'Update Post'
+      this.postSubmit.className = 'post-submit btn btn-warning btn-block'
+
+      // Create cancel btn
+      const btn = document.createElement('button')
+      btn.className = 'post-cancel btn btn-light btn-block'
+      btn.appendChild(document.createTextNode('Cancel Edit'))
+
+      // Get parent
+      const cardForm = document.querySelector('.card-form')
+
+      // Get element to insert before
+      const formEnd = document.querySelector('.form-end')
+
+      // Insert cancel button
+      cardForm.insertBefore(btn, formEnd)
+    } else {
+      this.postSubmit.textContent = 'Post It'
+      this.postSubmit.className = 'post-submit btn btn-primary btn-block'
+
+      // Remove cancel btn if it is there
+      if (document.querySelector('.post-cancel')) {
+        document.querySelector('.post-cancel').remove()
+      }
+
+      // Clear Id from hidden field
+      this.clearIdInput()
+
+      // Clear text
+      this.clearFields()
+    }
   }
 }
 export const ui = new UI()
